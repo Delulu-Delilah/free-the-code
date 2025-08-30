@@ -126,8 +126,8 @@ body::before {
 
 .glass-container {
   background: var(--glass);
-  backdrop-filter: blur(18px) saturate(110%);
   -webkit-backdrop-filter: blur(18px) saturate(110%);
+  backdrop-filter: blur(18px) saturate(110%);
   border: 1px solid var(--outline);
   border-radius: 16px;
   box-shadow: 0 8px 32px var(--shadow-1);
@@ -140,8 +140,8 @@ body::before {
   left: 0;
   right: 0;
   background: var(--surface-overlay);
-  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--border-default);
   z-index: 1000;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -248,8 +248,8 @@ html {
 /* Enhanced Header Styles */
 header {
   background: var(--surface-glass);
-  backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--border-default);
   color: var(--text-primary);
   padding: 4rem 2rem;
@@ -411,8 +411,8 @@ section {
   align-self: start;
   padding: 1.5rem;
   background: var(--surface-glass);
-  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--border-default);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-md);
@@ -490,8 +490,8 @@ section {
 
 .glass-card {
   background: var(--surface-glass);
-  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--border-default);
   border-radius: var(--border-radius-lg);
   padding: 3rem;
@@ -536,8 +536,8 @@ section {
 /* Enhanced Timeline and Status Elements */
 .timeline {
   background: var(--gradient-accent);
-  backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid var(--border-default);
   border-radius: var(--border-radius-md);
   padding: 1.5rem;
@@ -551,8 +551,8 @@ section {
 /* Enhanced Alert Styles */
 .highlight {
   background: rgba(255, 211, 61, 0.1);
-  backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid var(--border-default);
   border-radius: var(--border-radius-md);
   padding: 2rem;
@@ -565,8 +565,8 @@ section {
 
 .warning {
   background: rgba(248, 81, 73, 0.1);
-  backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid var(--border-default);
   border-radius: var(--border-radius-md);
   padding: 2rem;
@@ -579,8 +579,8 @@ section {
 
 .info {
   background: rgba(88, 166, 255, 0.1);
-  backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid var(--border-default);
   border-radius: var(--border-radius-md);
   padding: 2rem;
@@ -593,8 +593,8 @@ section {
 
 .gratitude {
   background: rgba(171, 71, 188, 0.12);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border: 1px solid var(--outline);
   border-radius: 15px;
   padding: 1.5rem;
@@ -815,34 +815,17 @@ footer {
   padding: 3rem 2rem;
   margin-top: 4rem;
   background: var(--surface-overlay);
-  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
   border-top: 1px solid var(--border-default);
   color: var(--text-secondary);
 }
 
+footer a { color: #fff; }
+
 /* Scroll Animations */
-.glass-card {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUp 0.8s ease forwards;
-}
-
-.glass-card:nth-child(1) { animation-delay: 0.1s; }
-.glass-card:nth-child(2) { animation-delay: 0.2s; }
-.glass-card:nth-child(3) { animation-delay: 0.3s; }
-.glass-card:nth-child(4) { animation-delay: 0.4s; }
-.glass-card:nth-child(5) { animation-delay: 0.5s; }
-.glass-card:nth-child(6) { animation-delay: 0.6s; }
-.glass-card:nth-child(7) { animation-delay: 0.7s; }
-.glass-card:nth-child(8) { animation-delay: 0.8s; }
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Initial state; reveal handled via IntersectionObserver in JS */
+.glass-card { opacity: 0; transform: translateY(30px); }
 
 /* Enhanced Mobile Navigation */
 @media (max-width: 768px) {

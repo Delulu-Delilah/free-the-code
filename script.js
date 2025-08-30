@@ -68,7 +68,7 @@
   // ---------- Loading animation ----------
   window.addEventListener('load', () => document.body.classList.add('loaded'));
 
-  // ---------- Smooth scroll with dynamic offset ----------
+  // ---------- Smooth scroll using native behavior; offset via CSS scroll-padding-top ----------
   document.addEventListener('click', (e) => {
     const anchor = e.target.closest('a[href^="#"]');
     if (!anchor) return;
@@ -76,12 +76,7 @@
     const target = href ? qs(href) : null;
     if (!target) return;
     e.preventDefault();
-    const fixedNav = qs('.nav-menu');
-    const headerOffset = fixedNav ? fixedNav.offsetHeight : 0;
-    const rect = target.getBoundingClientRect();
-    const extraGap = 20; // keep some space above the target for visibility
-    const offsetPosition = window.pageYOffset + rect.top - headerOffset - extraGap;
-    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   // ---------- Floating brand animation ----------
@@ -130,24 +125,18 @@
   });
 })();
 
-// Add keyboard navigation support
+// Add keyboard navigation support (re-query elements in this scope)
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && navLinks && navLinks.classList.contains('active')) {
-    navToggle.classList.remove('active');
-    navLinks.classList.remove('active');
+  const navToggleEl = document.querySelector('.nav-toggle');
+  const navLinksEl = document.querySelector('.nav-links');
+  if (e.key === 'Escape' && navLinksEl && navLinksEl.classList.contains('active')) {
+    navToggleEl && navToggleEl.classList.remove('active');
+    navLinksEl.classList.remove('active');
+    navToggleEl && navToggleEl.setAttribute('aria-expanded', 'false');
   }
 });
 
-// Enhanced hover effects for interactive elements
-document.querySelectorAll('.nav-link, .glass-card, .support-badge, .contributor-category').forEach(element => {
-  element.addEventListener('mouseenter', () => {
-    element.style.transform = element.style.transform + ' scale(1.02)';
-  });
-
-  element.addEventListener('mouseleave', () => {
-    element.style.transform = element.style.transform.replace(' scale(1.02)', '');
-  });
-});
+// (Removed duplicate global hover handlers; handled above)
 
 // Add dynamic theme switching capability (for future enhancement)
 function initializeTheme() {
@@ -169,52 +158,7 @@ initializeTheme();
 // Pulls the current time/date of the visitors system and updates "Still ongoing" accordingly
 // "Resolved" function added see Index.html
 
-(function setTimelineDates() {
-  function formatDate(date) {
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }
-
-  function formatDateTime(date) {
-    return formatDate(date) + " " + date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-  }
-
-  const issueRaisedDate = 'August 7, 2025';
-
-  // Get the actual last modified timestamp of this HTML file
-  const lastModified = new Date(document.lastModified);
-  const lastModifiedDate = formatDate(lastModified);
-  const lastModifiedDateTime = formatDateTime(lastModified);
-
-  const timelineEl = document.querySelector('.timeline');
-  const footerEls = document.querySelectorAll('.last-update');
-
-  if (!timelineEl) return;
-
-  const isResolved = timelineEl.dataset.resolved === "true";
-  const resolvedDateAttr = timelineEl.dataset.resolvedDate;
-
-  if (isResolved && resolvedDateAttr) {
-    const resolvedDate = formatDate(new Date(resolvedDateAttr));
-    const resolvedDateTime = formatDateTime(new Date(resolvedDateAttr));
-    timelineEl.textContent = `🗓️ Issue raised: ${issueRaisedDate} | Resolved on ${resolvedDate}`;
-    footerEls.forEach(p => {
-      p.textContent = `Page last updated: ${resolvedDateTime} | Issue resolved`;
-    });
-  } else {
-    timelineEl.textContent = `🗓️ Issue raised: ${issueRaisedDate} | Still ongoing as of ${lastModifiedDate}`;
-    footerEls.forEach(p => {
-      p.textContent = `Page last updated: ${lastModifiedDateTime} | Issue ongoing since ${issueRaisedDate}`;
-    });
-  }
-})();
+// (Removed hardcoded timeline/footer date mutator to avoid stale content)
 
 // Performance optimization: Debounce scroll events
 function debounce(func, wait) {
@@ -229,17 +173,9 @@ function debounce(func, wait) {
   };
 }
 
-// Use debounced scroll for better performance (keep other passive listener too)
-const debouncedSetActiveNav = debounce(() => {
-  const event = new Event('scroll');
-  window.dispatchEvent(event);
-}, 50);
-window.addEventListener('scroll', debouncedSetActiveNav, { passive: true });
+// (Removed artificial re-dispatch of scroll events)
 
-// Add accessibility improvements
-document.querySelectorAll('.nav-link').forEach(link => {
-  link.setAttribute('aria-label', `Navigate to ${link.textContent} section`);
-});
+// (Removed redundant aria-label additions on nav links)
 
 if (document.querySelector('.nav-toggle')) {
   const nt = document.querySelector('.nav-toggle');
@@ -264,8 +200,8 @@ if (document.querySelector('.nav-toggle')) {
     listEl.appendChild(li);
   }
 
-  // Fetch recent commits
-  fetch(`https://api.github.com/repos/${repo}/commits?per_page=5`)
+  // Fetch recent commits via Netlify proxy
+  fetch(`/.netlify/functions/gh-proxy?repo=${encodeURIComponent(repo)}&resource=commits&per_page=5`)
     .then(r => r.ok ? r.json() : [])
     .then(data => {
       if (!Array.isArray(data)) return;
@@ -273,27 +209,27 @@ if (document.querySelector('.nav-toggle')) {
         const msg = (c.commit && c.commit.message) ? c.commit.message.split('\n')[0] : 'Commit';
         const sha = (c.sha || '').substring(0,7);
         const url = c.html_url || `https://github.com/${repo}/commit/${c.sha}`;
-        addItem(commitsEl, `<a href="${url}" target="_blank">${msg}</a> <code>#${sha}</code>`);
+        addItem(commitsEl, `<a href="${url}" target="_blank" rel="noopener noreferrer">${msg}</a> <code>#${sha}</code>`);
       });
     }).catch(() => {});
 
-  // Fetch open issues
-  fetch(`https://api.github.com/repos/${repo}/issues?state=open&per_page=5`)
+  // Fetch open issues via Netlify proxy
+  fetch(`/.netlify/functions/gh-proxy?repo=${encodeURIComponent(repo)}&resource=issues&state=open&per_page=5`)
     .then(r => r.ok ? r.json() : [])
     .then(data => {
       if (!Array.isArray(data)) return;
       data.filter(i => !i.pull_request).forEach(i => {
-        addItem(issuesEl, `<a href="${i.html_url}" target="_blank">#${i.number} ${i.title}</a>`);
+        addItem(issuesEl, `<a href="${i.html_url}" target="_blank" rel="noopener noreferrer">#${i.number} ${i.title}</a>`);
       });
     }).catch(() => {});
 
-  // Fetch open pull requests
-  fetch(`https://api.github.com/repos/${repo}/pulls?state=open&per_page=5`)
+  // Fetch open pull requests via Netlify proxy
+  fetch(`/.netlify/functions/gh-proxy?repo=${encodeURIComponent(repo)}&resource=pulls&state=open&per_page=5`)
     .then(r => r.ok ? r.json() : [])
     .then(data => {
       if (!Array.isArray(data)) return;
       data.forEach(p => {
-        addItem(pullsEl, `<a href="${p.html_url}" target="_blank">#${p.number} ${p.title}</a>`);
+        addItem(pullsEl, `<a href="${p.html_url}" target="_blank" rel="noopener noreferrer">#${p.number} ${p.title}</a>`);
       });
     }).catch(() => {});
 })();
