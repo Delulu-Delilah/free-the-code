@@ -53,7 +53,7 @@
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setStyles(entry.target, { opacity: '1', transform: 'translateY(0)' });
+          entry.target.classList.add('is-revealed');
           observer.unobserve(entry.target);
         }
       });
@@ -72,11 +72,14 @@
   document.addEventListener('click', (e) => {
     const anchor = e.target.closest('a[href^="#"]');
     if (!anchor) return;
+    if (anchor.classList.contains('skip-link')) return; // preserve native focus jump
     const href = anchor.getAttribute('href');
     const target = href ? qs(href) : null;
     if (!target) return;
     e.preventDefault();
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
   });
 
   // ---------- Floating brand animation ----------

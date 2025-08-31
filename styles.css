@@ -824,8 +824,9 @@ footer {
 footer a { color: #fff; }
 
 /* Scroll Animations */
-/* Initial state; reveal handled via IntersectionObserver in JS */
+/* Initial state + revealed state for JS to toggle */
 .glass-card { opacity: 0; transform: translateY(30px); }
+.glass-card.is-revealed { opacity: 1; transform: translateY(0); }
 
 /* Enhanced Mobile Navigation */
 @media (max-width: 768px) {
