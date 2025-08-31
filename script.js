@@ -209,7 +209,7 @@ if (document.querySelector('.nav-toggle')) {
     .then(data => {
       if (!Array.isArray(data)) return;
       data.forEach(c => {
-        const msg = (c.commit && c.commit.message) ? c.commit.message.split('\n')[0] : 'Commit';
+        addItem(commitsEl, `<a href="${url}" target="_blank">${msg}</a> <code>#${sha}</code>`);
         const sha = (c.sha || '').substring(0,7);
         const url = c.html_url || `https://github.com/${repo}/commit/${c.sha}`;
         addItem(commitsEl, `<a href="${url}" target="_blank" rel="noopener noreferrer">${msg}</a> <code>#${sha}</code>`);
@@ -219,7 +219,7 @@ if (document.querySelector('.nav-toggle')) {
   // Fetch open issues via Netlify proxy
   fetch(`/.netlify/functions/gh-proxy?repo=${encodeURIComponent(repo)}&resource=issues&state=open&per_page=5`)
     .then(r => r.ok ? r.json() : [])
-    .then(data => {
+        addItem(issuesEl, `<a href="${i.html_url}" target="_blank">#${i.number} ${i.title}</a>`);
       if (!Array.isArray(data)) return;
       data.filter(i => !i.pull_request).forEach(i => {
         addItem(issuesEl, `<a href="${i.html_url}" target="_blank" rel="noopener noreferrer">#${i.number} ${i.title}</a>`);
@@ -229,7 +229,7 @@ if (document.querySelector('.nav-toggle')) {
   // Fetch open pull requests via Netlify proxy
   fetch(`/.netlify/functions/gh-proxy?repo=${encodeURIComponent(repo)}&resource=pulls&state=open&per_page=5`)
     .then(r => r.ok ? r.json() : [])
-    .then(data => {
+        addItem(pullsEl, `<a href="${p.html_url}" target="_blank">#${p.number} ${p.title}</a>`);
       if (!Array.isArray(data)) return;
       data.forEach(p => {
         addItem(pullsEl, `<a href="${p.html_url}" target="_blank" rel="noopener noreferrer">#${p.number} ${p.title}</a>`);
