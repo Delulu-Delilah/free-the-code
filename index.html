@@ -7,9 +7,13 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>PSA: Elegoo Centauri Carbon & GPL Compliance</title>
+    <link rel="preload" href="styles.css" as="style">
     <link rel="stylesheet" href="styles.css">
+    <link rel="preload" href="styles-mobile.css" as="style" media="only screen and (max-width: 480px)">
     <link rel="stylesheet" href="styles-mobile.css" media="only screen and (max-width: 480px)">
+    <link rel="preload" href="styles-lite.css" as="style" media="(max-width: 640px), (prefers-reduced-motion: reduce)">
     <link rel="stylesheet" href="styles-lite.css" media="(max-width: 640px), (prefers-reduced-motion: reduce)" id="liteStylesheet">
+    <link rel="preload" href="assets/icons/elegoo-logo.png" as="image" type="image/png">
     <link rel="icon" type="image/png" href="assets/icons/elegoo-logo.png">
     <link rel="canonical" href="https://freethecode.lol/">
     <meta name="description" content="A community effort aggregating evidence, context, and actions to ensure GPL compliance for the Elegoo Centauri Carbon firmware.">
@@ -29,6 +33,10 @@
     <meta name="twitter:title" content="PSA: Elegoo Centauri Carbon & GPL Compliance">
     <meta name="twitter:description" content="Evidence, links, and community actions regarding GPL compliance for the Centauri Carbon firmware.">
     <meta name="twitter:image" content="https://freethecode.lol/assets/images/cat-sunglasses.png">
+
+    <!-- Resource Hints for external APIs used below -->
+    <link rel="preconnect" href="https://api.github.com" crossorigin>
+    <link rel="dns-prefetch" href="https://api.github.com">
 
     <!-- Scripts -->
     <script src="script.js" defer></script>
