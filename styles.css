@@ -568,6 +568,33 @@ section {
   font-size: 1.05rem;
 }
 
+/* Resolved state: emphasize success (green) */
+.timeline[data-resolved="true"] {
+  background: rgba(63, 185, 80, 0.12); /* subtle green glass */
+  border-left: 4px solid var(--accent-success);
+  box-shadow: var(--shadow-md), 0 0 24px rgba(63, 185, 80, 0.3);
+}
+
+/* Prominent repo link below timeline */
+.repo-cta {
+  margin: 1rem 0 1.5rem 0;
+  text-align: center;
+}
+.repo-cta a {
+  display: inline-block;
+  padding: 0.85rem 1.2rem;
+  border-radius: var(--border-radius-md);
+  background: linear-gradient(135deg, rgba(63,185,80,0.18), rgba(63,185,80,0.1));
+  border: 1px solid rgba(63,185,80,0.45);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: var(--shadow-sm), 0 0 18px rgba(63,185,80,0.2);
+}
+.repo-cta a:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md), 0 0 22px rgba(63,185,80,0.28);
+}
+
 /* Enhanced Alert Styles */
 .highlight {
   background: rgba(255, 211, 61, 0.1);
